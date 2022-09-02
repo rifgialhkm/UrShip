@@ -10,14 +10,12 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 </head>
 
 <body class="hold-transition layout-top-nav">
@@ -100,8 +98,8 @@
                                                     style="width: 100%;">
                                                     <option selected="selected" disabled>-- Pilih Provinsi --</option>
                                                     @foreach($province as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->province }}
-                                                        </option>
+                                                    <option value="{{ $data->id }}">{{ $data->province }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -124,8 +122,8 @@
                                                     style="width: 100%;">
                                                     <option selected="selected" disabled>-- Pilih Provinsi --</option>
                                                     @foreach($province as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->province }}
-                                                        </option>
+                                                    <option value="{{ $data->id }}">{{ $data->province }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -166,7 +164,7 @@
                                                     data-placeholder="Pilih kurir (boleh pilih lebih dari 1)"
                                                     style="width: 100%;">
                                                     @foreach($listCourier as $item)
-                                                        <option value="{{ $item }}">{{ $item }}</option>
+                                                    <option value="{{ $item }}">{{ $item }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -176,38 +174,38 @@
                                 </div>
                             </form>
                             @if($checkCost)
-                                <div class="card-body table-responsive">
-                                    <table class="table table-striped table-bordered table-hovered">
-                                        <thead>
-                                            <tr>
-                                                <th>Kurir</th>
-                                                <th>Service</th>
-                                                <th>Deskripsi</th>
-                                                <th>Harga</th>
-                                                <th>Estimasi</th>
-                                                <th>Catatan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($checkCost as $result)
-                                                <tr>
-                                                    <td>{{ $result['name'] }}</td>
-                                                    <td>{{ $result['service'] }}</td>
-                                                    <td>{{ $result['description'] }}</td>
-                                                    <td>@currency($result['value'])</td>
-                                                    <td>
-                                                        @if(empty($result['etd']))
-                                                            {{ $result['etd'] }}
-                                                        @else
-                                                            {{ $result['etd'] }} hari
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $result['note'] }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-striped table-bordered table-hovered">
+                                    <thead>
+                                        <tr>
+                                            <th>Kurir</th>
+                                            <th>Service</th>
+                                            <th>Deskripsi</th>
+                                            <th>Harga</th>
+                                            <th>Estimasi</th>
+                                            <th>Catatan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($checkCost as $result)
+                                        <tr>
+                                            <td>{{ $result['name'] }}</td>
+                                            <td>{{ $result['service'] }}</td>
+                                            <td>{{ $result['description'] }}</td>
+                                            <td>@currency($result['value'])</td>
+                                            <td>
+                                                @if(empty($result['etd']))
+                                                {{ $result['etd'] }}
+                                                @else
+                                                {{ $result['etd'] }} hari
+                                                @endif
+                                            </td>
+                                            <td>{{ $result['note'] }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             @else
 
                             @endif

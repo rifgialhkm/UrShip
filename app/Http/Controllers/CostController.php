@@ -103,26 +103,28 @@ class CostController extends Controller
 
             $summary = data_get(json_decode($response, true), 'rajaongkir.result.summary');
 
-            // $trackPackage = collect(data_get(json_decode($response, true), 'rajaongkir.result.manifest', []))
-            //     ->flatMap(fn ($results) => collect($results['summary'])->map(fn ($summary) => [
-            //         'waybill_number' => $summary['waybill_number'],
-            //         'service_code' => $summary['service_code'],
-            //         'destination' => $summary['destination'],
-            //         'receiver_name' => $summary['receiver_name'],
-            //         'waybill_date' => $summary['waybill_date'],
-            //         'status' => $summary['status'],
-            //         ]))
-            //     ->values();
+            $details = data_get(json_decode($response, true), 'rajaongkir.result.details');
+
+            $manifest = collect(data_get(json_decode($response, true), 'rajaongkir.result.manifest', []))
+                ->map(fn ($results) => [
+                    'manifest_description' => $results['manifest_description'],
+                    'manifest_date' => $results['manifest_date'],
+                    'manifest_time' => $results['manifest_time'],
+                    ])
+                ->groupBy(['manifest_date'])
+                ->toArray();
         } else {
             $waybill = '';
             $courier = '';
-            $trackPackage = NULL;
+            $summary = NULL;
+            $details = NULL;
+            $manifest = NULL;
         }
 
         $listCourier = [
         'pos', 'wahana', 'sicepat', 'jnt', 'sap', 'jet', 'indah', 'dse', 'first', 'ncs', 'ninja', 'lion', 'idl', 'rex', 'ide', 'sentral', 'anteraja', 'jtl'
         ];
 
-        return view('cek-resi', compact('summary', 'listCourier'));
+        return view('cek-resi', compact('summary', 'details', 'manifest', 'listCourier'));
     }
 }

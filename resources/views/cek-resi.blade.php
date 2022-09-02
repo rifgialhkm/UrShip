@@ -10,14 +10,20 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <style>
+        .timeline div .fas {
+            height: 21px;
+            left: 22px;
+            width: 21px;
+        }
+
+    </style>
 </head>
 
 <body class="hold-transition layout-top-nav">
@@ -73,7 +79,7 @@
             <div class="content-header">
                 <div class="container">
                     <div class="row">
-                        <div class="col-10 ml-auto mr-auto">
+                        <div class="col-10 mx-auto">
                             <div class="row mb-2">
                                 <div class="col-sm-6">
                                     <h1 class="m-0"> Cek Resi </h1>
@@ -93,14 +99,15 @@
                             <div class="card card-default">
                                 <form action="{{ route('cek-resi') }}" method="get">
                                     @csrf
-    
+
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Nomor Resi</label>
-                                                    <input type="text" class="form-control" name="waybill" value="{{ request('waybill') }}"
-                                                        placeholder="Masukkan nomor resi">
+                                                    <input type="text" class="form-control" name="waybill"
+                                                        value="{{ request('waybill') }}"
+                                                        placeholder="Masukkan nomor resi" required>
                                                 </div>
                                             </div>
                                             <!-- /.col -->
@@ -111,7 +118,7 @@
                                                         style="width: 100%;">
                                                         <option selected="selected" disabled>-- Pilih Kurir --</option>
                                                         @foreach($listCourier as $item)
-                                                        <option value="{{ $item }}" >{{ $item }}</option>
+                                                        <option value="{{ $item }}">{{ $item }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -119,52 +126,119 @@
                                             <!-- /.col -->
                                         </div>
                                         <!-- /.row -->
-                                        <button type="submit" class="btn btn-primary">Cari</button>
+                                        <button type="submit" class="btn btn-primary">Cek Resi</button>
                                     </div>
                                 </form>
                                 <!-- /.card-body -->
                             </div>
                         </div>
                     </div>
+                    @if($summary && $details && $manifest)
                     <div class="row">
-                        <div class="col-10 mx-auto">
+                        <div class="col-12">
                             <div class="card card-default">
-                                <div class="card-body">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>No Resi</th>
-                                                <th>Layanan</th>
-                                                <th>Tujuan</th>
-                                                <th>Penerima</th>
-                                                <th>Tanggal Diterima</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr data-widget="expandable-table" aria-expanded="false">
-                                                <td>{{ $summary['waybill_number'] }}</td>
-                                                <td>{{ $summary['service_code'] }}</td>
-                                                <td>{{ $summary['destination'] }}</td>
-                                                <td>{{ $summary['receiver_name'] }}</td>
-                                                <td>{{ $summary['waybill_date'] }}</td>
-                                                <td>{{ $summary['status'] }}</td>
-                                            </tr>
-                                            <tr class="expandable-body">
-                                                <td colspan="5">
-                                                    <p>
-                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="card-body table-responsive">
+                                    <div class="row">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>No Resi</th>
+                                                    <th>Layanan</th>
+                                                    <th>Tujuan</th>
+                                                    <th>Penerima</th>
+                                                    <th>Tanggal Diterima</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-widget="expandable-table" aria-expanded="false">
+                                                    <td>{{ $summary['waybill_number'] }}</td>
+                                                    <td>{{ $summary['service_code'] }}</td>
+                                                    <td>{{ $summary['destination'] }}</td>
+                                                    <td>{{ $summary['receiver_name'] }}</td>
+                                                    <td>{{ $summary['waybill_date'] }}</td>
+                                                    <td>{{ $summary['status'] }}</td>
+                                                </tr>
+                                                <tr class="expandable-body">
+                                                    <td colspan="6">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <h5 class="font-weight-bold">Info Pengiriman</h5>
+                                                                <dl>
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <dt>Tanggal Pengiriman</dt>
+                                                                            <dd>{{ $details['waybill_date'] }}</dd>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <dt>Asal</dt>
+                                                                            <dd>{{ $details['origin'] }}</dd>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <dt>Tujuan</dt>
+                                                                            <dd>{{ $details['destination'] }}</dd>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <dt>Pengirim</dt>
+                                                                            <dd>{{ $details['shippper_name'] }}</dd>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <dt>Penerima</dt>
+                                                                            <dd>{{ $details['receiver_name'] }}</dd>
+                                                                        </div>
+                                                                    </div>
+                                                                </dl>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <h5 class="font-weight-bold">Status Pengiriman</h5>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <!-- The time line -->
+                                                                        <div class="timeline">
+                                                                            @foreach($manifest as $manifest_date =>
+                                                                            $manifestItem)
+                                                                            <!-- timeline time label -->
+                                                                            <div class="time-label">
+                                                                                <span class="bg-gray">{{ $manifest_date }}</span>
+                                                                            </div>
+                                                                            <!-- /.timeline-label -->
+                                                                            @foreach($manifestItem as $item)
+                                                                            <!-- timeline item -->
+                                                                            <div>
+                                                                                <i class="fas bg-gray"></i>
+                                                                                <div class="timeline-item">
+                                                                                    <span
+                                                                                        class="time">{{ $item['manifest_time'] }}</span>
+                                                                                    <h3 class="timeline-header">
+                                                                                        {{ $item['manifest_description'] }}
+                                                                                    </h3>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- END timeline item -->
+                                                                            @endforeach
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- /.col -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <!-- /.card-body -->
                             </div>
                             <!-- /.card -->
                         </div>
                     </div>
+                    @else
+
+                    @endif
                 </div><!-- /.container-fluid -->
             </div>
             <!-- /.content -->
@@ -208,75 +282,6 @@
                 theme: 'bootstrap4'
             })
         })
-
-        // select depedencies
-        $(document).ready(function () {
-            $('select[name="province_origin"]').on('change', function () {
-                var cityId = $(this).val();
-                if (cityId) {
-                    $.ajax({
-                        url: 'getCity/ajax/' + cityId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function (data) {
-                            $('select[name="origin"]').append();
-                            $.each(data, function (key, value) {
-                                $('select[name="origin"]').append(
-                                    '<option value="' +
-                                    key + '">' + value + '</option>');
-                            });
-                        },
-                        error: function (error) {
-                            console.log('error:', error)
-                        },
-                    });
-                } else {
-                    $('select[name="origin"]').empty();
-                }
-            });
-
-            $('select[name="province_destination"]').on('change', function () {
-                var cityId = $(this).val();
-                if (cityId) {
-                    $.ajax({
-                        url: 'getCity/ajax/' + cityId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function (data) {
-                            $('select[name="city_destination"]').append();
-                            $.each(data, function (key, value) {
-                                $('select[name="city_destination"]').append(
-                                    '<option value="' +
-                                    key + '">' + value + '</option>');
-                            });
-                        },
-                        error: function (error) {
-                            console.log('error:', error)
-                        },
-                    });
-                } else {
-                    $('select[name="city_destination"]').empty();
-                }
-            });
-
-            $('select[name="city_destination"]').on('change', function () {
-                var subdistrictId = $(this).val();
-                if (subdistrictId) {
-                    $.ajax({
-                        url: 'getSubdistrict/ajax/' + subdistrictId,
-                        type: "GET",
-                        success: function (response) {
-                            $('select[name="destination"]').html(response);
-                        },
-                        error: function (error) {
-                            console.log('error:', error)
-                        },
-                    });
-                } else {
-                    $('select[name="destination"]').empty();
-                }
-            });
-        });
 
     </script>
 </body>
